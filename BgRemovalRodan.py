@@ -5,7 +5,7 @@ from celery.utils.log import get_task_logger
 
 class BgRemoval(RodanTask):
 
-    name = 'Remove background'
+    name = 'Background Removal'
     author = 'Wanyi Lin and Khoi Nguyen'
     description = "Use Sauvola threshold to remove background"
     logger = get_task_logger(__name__)
@@ -15,14 +15,14 @@ class BgRemoval(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'PNG Image',
+        'name': 'Image',
         'resource_types': lambda mime: mime.startswith('image/'),
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
         'name': 'RGB PNG image',
-        'resource_types': ['image/rgb+png'],
+        'resource_types': ['image/rgba+png'],
         'minimum': 1,
         'maximum': 1
     }]
@@ -45,11 +45,11 @@ class BgRemoval(RodanTask):
             },
             'contrast': {
                 'type': 'number',
-                'default': 127
+                'default': 127.0
             },
             'brightness': {
                 'type': 'number',
-                'default': 0
+                'default': 0.0
             }
         }
     }
@@ -58,15 +58,14 @@ class BgRemoval(RodanTask):
         from . import background_removal_engine as Engine
         from . import LoaderWriter
 
-        mode = 'rgb'
-        load_image_path = inputs['PNG image'][0]['resource_path']
-        image_bgr = LoaderWriter.load_image(load_image_path, mode=mode)
+        load_image_path = inputs['Image'][0]['resource_path']
+        image_bgr = LoaderWriter.load_image(load_image_path)
 
         # Remove background here.
         image_processed = Engine.remove_background(image_bgr, settings["window_size"], settings["k"], settings["contrast"], settings["brightness"])
 
         save_image_path = "{}.png".format(outputs['RGB PNG image'][0]['resource_path'])
-        LoaderWriter.write_image(save_image_path, image_processed, mode=mode)
+        LoaderWriter.write_image(save_image_path, image_processed)
         os.rename(save_image_path,outputs['RGB PNG image'][0]['resource_path'])
         return True
 
