@@ -11,7 +11,7 @@ from keras import backend as K
 import logging
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import util, utilDataGenerator, utilModelREDNet
+from . import util, utilDataGenerator, utilModelREDNet
 
 util.init()
 warnings.filterwarnings('ignore')

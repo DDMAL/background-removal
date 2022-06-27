@@ -2,8 +2,8 @@ import argparse
 import os.path as osp
 import glob
 
-from background_removal_engine import remove_background
-from LoaderWriter import load_image, write_image
+from background_removal.background_removal_engine import remove_background
+from background_removal.LoaderWriter import load_image, write_image
 
 def getArgs():
     parser = argparse.ArgumentParser()

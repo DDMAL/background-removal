@@ -11,7 +11,7 @@ import numpy as np
 from tensorflow.keras import backend as K
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import util, utilDataGenerator, utilModelREDNet
+from . import util, utilDataGenerator, utilModelREDNet
 
 util.init()
 warnings.filterwarnings('ignore')

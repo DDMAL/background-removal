@@ -1,4 +1,3 @@
-import numpy as np
 from skimage.io import imread, imsave
 
 def load_image(image_path):
