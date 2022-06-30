@@ -81,6 +81,10 @@ def remove_background(img, window_size, k, contrast, brightness):
     
     return img
 
+def empty_layer(img):
+    blank_image = np.zeros((img.shape[0],img.shape[1],4), np.uint8)
+    return blank_image
+
 def main():
     # Import image
     img = imread('../datasets/images/bounding/test.png')
